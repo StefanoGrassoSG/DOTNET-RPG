@@ -30,10 +30,33 @@ namespace DOTNET_RPG.Services.CharacterService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+
+            try
+            {
+                var character = Characters.FirstOrDefault(c => c.Id == id);
+                if (character == null)
+                    throw new Exception($"character with id '{id}' not found.");
+
+                Characters.Remove(character);
+
+                serviceResponse.Data = Characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAll()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            serviceResponse.Data = Characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList(); ;
+            serviceResponse.Data = Characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
             return serviceResponse;
         }
 
@@ -52,7 +75,8 @@ namespace DOTNET_RPG.Services.CharacterService
             try
             {
                 var character = Characters.FirstOrDefault(c => c.Id == updatedCharacter.Id);
-
+                if (character == null)
+                    throw new Exception($"character with id '{updatedCharacter.Id}' not found.");
                 character.Name = updatedCharacter.Name;
                 character.HitPoints = updatedCharacter.HitPoints;
                 character.Strength = updatedCharacter.Strength;
