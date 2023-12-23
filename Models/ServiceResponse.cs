@@ -1,4 +1,6 @@
-﻿namespace DOTNET_RPG.Models
+﻿using Microsoft.VisualBasic;
+
+namespace DOTNET_RPG.Models
 {
     public class ServiceResponse<T>
     {
