@@ -3,6 +3,7 @@ using DOTNET_RPG.Dtos.Character;
 using DOTNET_RPG.Services.CharacterService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace DOTNET_RPG.Controllers
 {
@@ -23,7 +24,8 @@ namespace DOTNET_RPG.Controllers
         [Route("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
         {
-            return Ok(await _characterService.GetAll());
+            int userId = int.Parse(User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)!.Value);
+            return Ok(await _characterService.GetAll(userId));
         }
 
         [HttpGet("{id}")]

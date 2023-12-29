@@ -4,7 +4,7 @@ namespace DOTNET_RPG.Services.CharacterService
 {
     public interface ICharacterService
     {
-        Task<ServiceResponse<List<GetCharacterDto>>> GetAll();
+        Task<ServiceResponse<List<GetCharacterDto>>> GetAll(int userId);
 
         Task<ServiceResponse<GetCharacterDto>> GetById(int id);
 
